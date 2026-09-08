@@ -1,0 +1,18 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+
+# Local database configuration
+MusicPlayer/appsettings.json
+
+# Old project
+FinalMusicPlayer/
+SQL/
+FinalMusicPlayer.7z
+/MusicPlayer.csproj
+
+# Old audio library
+MusicPlayer/AllSongs
