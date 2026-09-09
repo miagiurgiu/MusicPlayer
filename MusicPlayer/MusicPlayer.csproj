@@ -54,6 +54,12 @@
     <Compile Include="AddPlaylistForm.Designer.cs">
       <DependentUpon>AddPlaylistForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddSongForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddSongForm.Designer.cs">
+      <DependentUpon>AddSongForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddSongsToPlaylistForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,9 @@
     <Compile Include="SqlConn.cs" />
     <EmbeddedResource Include="AddPlaylistForm.resx">
       <DependentUpon>AddPlaylistForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddSongForm.resx">
+      <DependentUpon>AddSongForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddSongsToPlaylistForm.resx">
       <DependentUpon>AddSongsToPlaylistForm.cs</DependentUpon>

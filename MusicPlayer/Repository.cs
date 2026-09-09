@@ -38,7 +38,9 @@ public class Repository
 
     public int addPlaylist(Playlist playlist)
     {
-        return conn.addPlaylist(playlist);
+        int id = conn.addPlaylist(playlist);
+        readPlaylistsFromDatabase();
+        return id;
     }
 
     // ------------------------ GET ------------------------
@@ -58,6 +60,19 @@ public class Repository
         return null;
     }
 
+    public Artist getArtistByName(string name)
+    {
+        for (int i = 0; i < numberOfArtists; i++)
+        {
+            if (artists[i] != null &&
+                artists[i].Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            {
+                return artists[i];
+            }
+        }
+
+        return null;
+    }
     public Playlist getPlaylist(int idPlaylist)
     {
         for (int i = 0; i < numberOfPlaylists; i++)
@@ -173,5 +188,12 @@ public class Repository
     {
         artists = conn.getArtists();
         numberOfArtists = conn.getNumberOfArtists();
+    }
+
+    public int addArtist(string name)
+    {
+        int id = conn.addArtist(name);
+        readArtistsFromDatabase();
+        return id;
     }
 }

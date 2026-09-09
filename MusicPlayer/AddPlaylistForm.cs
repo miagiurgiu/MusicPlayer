@@ -7,10 +7,11 @@ namespace MusicPlayer
     public partial class AddPlaylistForm : Form
     {
         private Service service;
-
+        private DisplayPlaylistForm displayPlaylistForm;
         public AddPlaylistForm(Service service)
         {
             this.service = service;
+           // this.displayPlaylistForm = displayPlaylistForm;
             InitializeComponent();
         }
 

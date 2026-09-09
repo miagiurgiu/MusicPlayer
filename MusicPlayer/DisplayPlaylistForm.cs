@@ -22,6 +22,11 @@ namespace MusicPlayer
             this.mainForm = mainForm;
             flowLayoutPanel1.AutoScroll = true;
         }
+        public void RefreshPlaylists()
+        {
+            flowLayoutPanel1.Controls.Clear();
+            setPlaylists();
+        }
         private void setPlaylists()
         {
             Playlist[] playlists = service.getAllPlaylists();

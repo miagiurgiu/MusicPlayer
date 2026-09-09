@@ -358,6 +358,28 @@ namespace MusicPlayer
             }
         }
 
+        public int addArtist(string name)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+            INSERT INTO Artists(name, nationality, birthdate, style)
+            OUTPUT INSERTED.idArtist
+            VALUES (@name, @nationality, @birthdate, @style)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", name);
+                    command.Parameters.AddWithValue("@nationality", "Unknown");
+                    command.Parameters.AddWithValue("@birthdate", new DateTime(1900,1,1));
+                    command.Parameters.AddWithValue("@style", "Unknown");
+
+                    return (int)command.ExecuteScalar();
+                }
+            }
+        }
 
 
     }

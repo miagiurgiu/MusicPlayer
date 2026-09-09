@@ -17,6 +17,7 @@ namespace MusicPlayer
         public DisplaySongsFromPlaylist(Service service, int playlistId, Form1 mainForm)
         {
             InitializeComponent();
+            addSong.Click += addSong_Click;
             Playlist playlist = service.getAllPlaylists().FirstOrDefault(p => p.IdPlaylist == playlistId);
             if (playlist != null)
             {
@@ -38,6 +39,13 @@ namespace MusicPlayer
             DisplaySongs();
         }
 
+        private void addSong_Click(object sender, EventArgs e)
+        {
+            ManageSongsFromPlaylist form =
+                new ManageSongsFromPlaylist(service, playlistId.ToString());
+
+            form.Show();
+        }
         private void SetupLayout()
         {
             tableLayoutPanel1.Controls.Clear();
@@ -76,6 +84,12 @@ namespace MusicPlayer
                 songLabel.Click += (s, e) =>
                 {
                     int id = (int)((Label)s).Tag;
+
+                    if (isInPlaylist)
+                        service.setPlayingSongs(songsInPlaylist);
+                    else
+                        service.setPlayingSongs(allSongs);
+
                     mainForm.playSelectedSong(id);
                 };
 

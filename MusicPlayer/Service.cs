@@ -184,5 +184,15 @@ namespace MusicPlayer
         {
             repository.updateSong(song);
         }
+
+        public Artist getArtistByName(string name)
+        {
+            return repository.getArtistByName(name);
+        }
+
+        public int addArtist(string name)
+        {
+            return repository.addArtist(name);
+        }
     }
 }

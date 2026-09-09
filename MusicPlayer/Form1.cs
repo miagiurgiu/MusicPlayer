@@ -55,8 +55,13 @@ namespace MusicPlayer
         {
             service.playSongFromCurrentList(songId); // doar setează currentSongIndex
 
-            Song selectedSong = service.currentSong();
+            Song selectedSong = service.currentSong(); 
             //MessageBox.Show(GetAudioPath(selectedSong));
+    //        MessageBox.Show(
+    //"DB path: " + selectedSong.Path +
+    //"\nFull path: " + GetAudioPath(selectedSong) +
+    //"\nExists: " + File.Exists(GetAudioPath(selectedSong))
+//);
             if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong))){ 
                 MessageBox.Show("Melodia nu există sau fișierul nu a fost găsit.");
                 return;
@@ -83,7 +88,7 @@ namespace MusicPlayer
 
             _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
             _soundPlayer.Play();
-
+            //MessageBox.Show("Play() executed");
             _myTimer.Stop();
             if (_songDurationSeconds > 0)
                 _myTimer.Start();
@@ -274,6 +279,19 @@ namespace MusicPlayer
         private void addPlaylistButton_Click(object sender, EventArgs e)
         {
             AddPlaylistForm form = new AddPlaylistForm(service);
+            form.Show();
+        }
+
+        private void addSongToDatabaseButton_Click(object sender, EventArgs e)
+        {
+            AddSongForm form = new AddSongForm(service);
+
+            form.FormClosed += (s, args) =>
+            {
+                DisplaySongsForm songsForm = new DisplaySongsForm(service, this);
+                songsForm.Show();
+            };
+
             form.Show();
         }
     }
