@@ -22,14 +22,17 @@ namespace MusicPlayer
         private Timer _myTimer;
         private int _timeElapsed; // in secunde
         private int _songDurationSeconds = 0;
+        private DisplaySongsForm displaySongsForm;
 
         public Form1(Service service)
         {
             this.service = service;
             InitializeComponent();
+
             _myTimer = new Timer();
             _myTimer.Interval = 1000;
             _myTimer.Tick += new EventHandler(TimerEventProcessor);
+
             setFirstSong();
             this.Load += Form1_Load;
         }
@@ -40,7 +43,9 @@ namespace MusicPlayer
             artistLabel.Visible = false;
         }
 
-        private void setFirstSong() { }
+        private void setFirstSong()
+        {
+        }
 
         private string GetAudioPath(Song song)
         {
@@ -51,18 +56,15 @@ namespace MusicPlayer
                 Path.GetFileName(song.Path)
             );
         }
+
         public void playSelectedSong(int songId)
         {
-            service.playSongFromCurrentList(songId); // doar setează currentSongIndex
+            service.playSongFromCurrentList(songId);
 
-            Song selectedSong = service.currentSong(); 
-            //MessageBox.Show(GetAudioPath(selectedSong));
-    //        MessageBox.Show(
-    //"DB path: " + selectedSong.Path +
-    //"\nFull path: " + GetAudioPath(selectedSong) +
-    //"\nExists: " + File.Exists(GetAudioPath(selectedSong))
-//);
-            if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong))){ 
+            Song selectedSong = service.currentSong();
+
+            if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong)))
+            {
                 MessageBox.Show("Melodia nu există sau fișierul nu a fost găsit.");
                 return;
             }
@@ -78,28 +80,41 @@ namespace MusicPlayer
             timeLabel.Text = "00:00";
 
             playButton.Image = Image.FromFile(
-    Path.Combine(Application.StartupPath, "Media", "Images", "pause.jpeg")
-);
-            //playButton.Image = Image.FromFile("C:\\Users\\Maria\\Desktop\\FinalMusicPlayer\\MusicPlayer\\Images\\pause.jpeg");
+                Path.Combine(
+                    Application.StartupPath,
+                    "Media",
+                    "Images",
+                    "pause.jpeg"
+                )
+            );
+
             title.Text = selectedSong.Title;
             artistLabel.Text = artist?.Name ?? "Artist necunoscut";
             artistLabel.Visible = true;
             help.Text = "true";
 
-            _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
-            _soundPlayer.Play();
-            //MessageBox.Show("Play() executed");
+            // STOP OLD SONG FIRST
+            if (_soundPlayer != null)
+                _soundPlayer.Stop();
+
             _myTimer.Stop();
+
+            _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
+            _soundPlayer.Load();
+            _soundPlayer.Play();
+
             if (_songDurationSeconds > 0)
                 _myTimer.Start();
         }
 
-
         public void playSelectedPlaylist(int playlistId)
         {
             service.playSelectedPlaylist(playlistId);
+
             Song selectedSong = service.currentSong();
-            if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong))) return;
+
+            if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong)))
+                return;
 
             if (TimeSpan.TryParse(selectedSong.Duration, out TimeSpan duration))
                 _songDurationSeconds = (int)duration.TotalSeconds;
@@ -111,19 +126,30 @@ namespace MusicPlayer
 
             Artist artist = service.getArtistById(selectedSong.IdArtist);
 
-            //playButton.Image = Image.FromFile("C:\\Users\\Maria\\Desktop\\FinalMusicPlayer\\MusicPlayer\\Images\\pause.jpeg");
             playButton.Image = Image.FromFile(
-    Path.Combine(Application.StartupPath, "Media", "Images", "pause.jpeg")
-);
+                Path.Combine(
+                    Application.StartupPath,
+                    "Media",
+                    "Images",
+                    "pause.jpeg"
+                )
+            );
+
             title.Text = selectedSong.Title;
             artistLabel.Text = artist?.Name ?? "Artist necunoscut";
             artistLabel.Visible = true;
             help.Text = "true";
 
-            _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
-            _soundPlayer.Play();
+            // STOP OLD SONG FIRST
+            if (_soundPlayer != null)
+                _soundPlayer.Stop();
 
             _myTimer.Stop();
+
+            _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
+            _soundPlayer.Load();
+            _soundPlayer.Play();
+
             if (_songDurationSeconds > 0)
                 _myTimer.Start();
         }
@@ -131,7 +157,9 @@ namespace MusicPlayer
         public void playCurrentSong()
         {
             Song selectedSong = service.currentSong();
-            if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong))) return;
+
+            if (selectedSong == null || !File.Exists(GetAudioPath(selectedSong)))
+                return;
 
             if (TimeSpan.TryParse(selectedSong.Duration, out TimeSpan duration))
                 _songDurationSeconds = (int)duration.TotalSeconds;
@@ -143,19 +171,30 @@ namespace MusicPlayer
 
             Artist artist = service.getArtistById(selectedSong.IdArtist);
 
-            //playButton.Image = Image.FromFile("C:\\Users\\Maria\\Desktop\\FinalMusicPlayer\\MusicPlayer\\Images\\pause.jpeg");
             playButton.Image = Image.FromFile(
-    Path.Combine(Application.StartupPath, "Media", "Images", "pause.jpeg")
-);
+                Path.Combine(
+                    Application.StartupPath,
+                    "Media",
+                    "Images",
+                    "pause.jpeg"
+                )
+            );
+
             title.Text = selectedSong.Title;
             artistLabel.Text = artist?.Name ?? "Artist necunoscut";
             artistLabel.Visible = true;
             help.Text = "true";
 
-            _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
-            _soundPlayer.Play();
+            // STOP OLD SONG FIRST
+            if (_soundPlayer != null)
+                _soundPlayer.Stop();
 
             _myTimer.Stop();
+
+            _soundPlayer = new SoundPlayer(GetAudioPath(selectedSong));
+            _soundPlayer.Load();
+            _soundPlayer.Play();
+
             if (_songDurationSeconds > 0)
                 _myTimer.Start();
         }
@@ -163,7 +202,9 @@ namespace MusicPlayer
         private void playButton_Click(object sender, EventArgs e)
         {
             Song currentSong = service.currentSong();
-            if (currentSong == null || !File.Exists(GetAudioPath(currentSong))) return;
+
+            if (currentSong == null || !File.Exists(GetAudioPath(currentSong)))
+                return;
 
             if (title.Text == "")
             {
@@ -172,113 +213,171 @@ namespace MusicPlayer
             else if (help.Text == "false")
             {
                 playButton.Image = Image.FromFile(
-    Path.Combine(Application.StartupPath, "Media", "Images", "pause.jpeg")
-);
-                //playButton.Image = Image.FromFile("C:\\Users\\Maria\\Desktop\\FinalMusicPlayer\\MusicPlayer\\Images\\pause.jpeg");
+                    Path.Combine(
+                        Application.StartupPath,
+                        "Media",
+                        "Images",
+                        "pause.jpeg"
+                    )
+                );
+
                 _soundPlayer.Play();
                 _myTimer.Start();
+
                 _timeElapsed = 0;
                 help.Text = "true";
             }
             else
             {
-                //playButton.Image = Image.FromFile("C:\\Users\\Maria\\Desktop\\FinalMusicPlayer\\MusicPlayer\\Images\\play.jpeg");
                 playButton.Image = Image.FromFile(
-    Path.Combine(Application.StartupPath, "Media", "Images", "play.jpeg")
-);
+                    Path.Combine(
+                        Application.StartupPath,
+                        "Media",
+                        "Images",
+                        "play.jpeg"
+                    )
+                );
+
                 _soundPlayer.Stop();
                 _myTimer.Stop();
+
                 _timeElapsed = 0;
                 help.Text = "false";
             }
         }
 
-        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        private void TimerEventProcessor(
+            Object myObject,
+            EventArgs myEventArgs
+        )
         {
-            if (_songDurationSeconds <= 0) return;
+            if (_songDurationSeconds <= 0)
+                return;
+
             _timeElapsed++;
-            string minutes = (_timeElapsed / 60).ToString("D2");
-            string seconds = (_timeElapsed % 60).ToString("D2");
-            timeLabel.Text = $"{minutes}:{seconds}";
+
+            string minutes =
+                (_timeElapsed / 60).ToString("D2");
+
+            string seconds =
+                (_timeElapsed % 60).ToString("D2");
+
+            timeLabel.Text =
+                $"{minutes}:{seconds}";
 
             if (_timeElapsed >= _songDurationSeconds)
             {
                 _myTimer.Stop();
                 _soundPlayer.Stop();
 
-                Song next = service.nextSong();
-                if (next != null && File.Exists(GetAudioPath(next)))
+                Song next =
+                    service.nextSong();
+
+                if (next != null &&
+                    File.Exists(GetAudioPath(next)))
                 {
                     playSelectedSong(next.IdSong);
                 }
             }
         }
 
-        //private void nextButton_Click(object sender, EventArgs e)
-        //{
-        //    service.nextSong();
-        //    playCurrentSong();
-        //}
-        private void nextButton_Click(object sender, EventArgs e)
+        private void nextButton_Click(
+            object sender,
+            EventArgs e
+        )
         {
-            Song next = service.nextSong();
+            Song next =
+                service.nextSong();
+
             int attempts = 0;
 
-            while (next != null &&
-                   !File.Exists(GetAudioPath(next)) &&
-                   attempts < service.getAllSongsCount())
+            while (
+                next != null &&
+                !File.Exists(GetAudioPath(next)) &&
+                attempts < service.getAllSongsCount()
+            )
             {
-                next = service.nextSong();
+                next =
+                    service.nextSong();
+
                 attempts++;
             }
 
-            if (next != null && File.Exists(GetAudioPath(next)))
+            if (next != null &&
+                File.Exists(GetAudioPath(next)))
+            {
                 playCurrentSong();
+            }
         }
 
-        //private void previousButton_Click(object sender, EventArgs e)
-        //{
-        //    service.previousSong();
-        //    playCurrentSong();
-        //}
-        private void previousButton_Click(object sender, EventArgs e)
+        private void previousButton_Click(
+            object sender,
+            EventArgs e
+        )
         {
-            Song previous = service.previousSong();
+            Song previous =
+                service.previousSong();
+
             int attempts = 0;
 
-            while (previous != null &&
-                   !File.Exists(GetAudioPath(previous)) &&
-                   attempts < service.getAllSongsCount())
+            while (
+                previous != null &&
+                !File.Exists(GetAudioPath(previous)) &&
+                attempts < service.getAllSongsCount()
+            )
             {
-                previous = service.previousSong();
+                previous =
+                    service.previousSong();
+
                 attempts++;
             }
 
-            if (previous != null && File.Exists(GetAudioPath(previous)))
+            if (previous != null &&
+                File.Exists(GetAudioPath(previous)))
+            {
                 playCurrentSong();
+            }
         }
 
-        private void displayPlaylists_Click(object sender, EventArgs e)
+        private void displayPlaylists_Click(
+            object sender,
+            EventArgs e
+        )
         {
-            DisplayPlaylistForm displayPlaylistForm = new DisplayPlaylistForm(service, this);
+            DisplayPlaylistForm displayPlaylistForm =
+                new DisplayPlaylistForm(
+                    service,
+                    this
+                );
+
             displayPlaylistForm.Show();
         }
 
         private void displaySongs_Click(object sender, EventArgs e)
         {
-            DisplaySongsForm displaySongsForm = new DisplaySongsForm(service, this);
+            displaySongsForm = new DisplaySongsForm(service, this);
             displaySongsForm.Show();
         }
 
-        private void deleteSongs_Click(object sender, EventArgs e)
+        private void deleteSongs_Click(
+            object sender,
+            EventArgs e
+        )
         {
-            DeleteSongsForm deleteSongsForm = new DeleteSongsForm(service);
+            DeleteSongsForm deleteSongsForm =
+                new DeleteSongsForm(service);
+
             deleteSongsForm.Show();
         }
 
-        private void addPlaylistButton_Click(object sender, EventArgs e)
+        private void addPlaylistButton_Click(
+            object sender,
+            EventArgs e
+        )
         {
-            AddPlaylistForm form = new AddPlaylistForm(service);
+            AddPlaylistForm form =
+                new AddPlaylistForm(service);
+
             form.Show();
         }
 
@@ -288,8 +387,10 @@ namespace MusicPlayer
 
             form.FormClosed += (s, args) =>
             {
-                DisplaySongsForm songsForm = new DisplaySongsForm(service, this);
-                songsForm.Show();
+                if (displaySongsForm != null && !displaySongsForm.IsDisposed)
+                {
+                    displaySongsForm.RefreshSongs();
+                }
             };
 
             form.Show();

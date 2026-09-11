@@ -138,14 +138,19 @@ namespace MusicPlayer
                     Button b = (Button)sender;
                     int songId = (int)b.Tag;
 
-                    // Redă melodia
-                    mainForm.playSelectedSong(songId);
+                    Song[] allSongs = service.getAllSongs();
 
-                    // Deschide fereastra cu detalii
-                    Song selectedSong = service.getAllSongs().FirstOrDefault(s => s.IdSong == songId);
+                    service.setPlayingSongs(allSongs);
+                    service.playSongFromCurrentList(songId);
+
+                    mainForm.playCurrentSong();
+
+                    Song selectedSong = allSongs.FirstOrDefault(s => s.IdSong == songId);
                     if (selectedSong != null)
                     {
-                        DisplaySongDetails detailsForm = new DisplaySongDetails(selectedSong, service);
+                        DisplaySongDetails detailsForm =
+                            new DisplaySongDetails(selectedSong, service);
+
                         detailsForm.Show();
                     }
                 };

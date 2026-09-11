@@ -58,21 +58,27 @@ namespace MusicPlayer
 
                     if (playlistSongs.Length == 0)
                     {
-                        MessageBox.Show("Acest playlist nu conține nicio melodie.");
+                        MessageBox.Show("This playlist is empty.");
                         return;
                     }
+
+                    // Set the playlist as the current playing queue
                     service.setPlayingSongs(playlistSongs);
-                    service.playSongFromCurrentList(playlistSongs[0].IdSong); // NU pierzi playlistul
-                    mainForm.playCurrentSong(); // o metodă nouă în Form1 dacă vrei să refolosești redarea
 
-                    // Încarcă DOAR melodiile din playlist
-                    //service.setPlayingSongs(playlistSongs);
+                    // Select its first song
+                    service.playSongFromCurrentList(playlistSongs[0].IdSong);
 
-                    // Pornește redarea de la prima melodie din playlist
-                    // mainForm.playSelectedSong(playlistSongs[0].IdSong);
+                    // Actually play it
+                    mainForm.playCurrentSong();
 
-                    // Deschide fereastra cu lista de melodii din acest playlist
-                    DisplaySongsFromPlaylist form = new DisplaySongsFromPlaylist(service, id, mainForm);
+                    // Show information about the first song
+                    DisplaySongDetails detailsForm =
+                        new DisplaySongDetails(playlistSongs[0], service);
+                    detailsForm.Show();
+
+                    // Open the playlist
+                    DisplaySongsFromPlaylist form =
+                        new DisplaySongsFromPlaylist(service, id, mainForm);
                     form.Show();
                 };
 
