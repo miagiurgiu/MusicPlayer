@@ -29,8 +29,13 @@ namespace MusicPlayer
                 playlistLabel.Left = (this.ClientSize.Width - playlistLabel.Width) / 2;
                 //playlistLabel.Location = new Point(30, 10); // mai la stânga și sus
                 //playlistLabel.Size = new Size(500, 40);     // lățime și înălțime personalizate
-               // playlistLabel.AutoSize = false;             // activăm controlul mărimii
-
+                // playlistLabel.AutoSize = false;             // activăm controlul mărimii
+                descriptionLabel.Text = playlist.Description;
+                descriptionLabel.Font = new Font("Candara", 10, FontStyle.Italic);
+                descriptionLabel.ForeColor = Color.Black;
+                descriptionLabel.BackColor = Color.Transparent; // dacă fundalul permite
+                descriptionLabel.TextAlign = ContentAlignment.MiddleCenter;
+                descriptionLabel.Left = (this.ClientSize.Width - descriptionLabel.Width) / 2;
             }
             this.service = service;
             this.playlistId = playlistId;
@@ -171,6 +176,11 @@ namespace MusicPlayer
         private void panel1_Paint(object sender, PaintEventArgs e) { }
 
         private void DisplaySongsFromPlaylist_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void descriptionLabel_Click(object sender, EventArgs e)
         {
 
         }

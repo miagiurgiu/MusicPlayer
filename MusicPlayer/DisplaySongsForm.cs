@@ -90,6 +90,7 @@ namespace MusicPlayer
             InitializeComponent();
             //this.Resize += DisplaySongsForm_Resize;
             panel1.BackColor = Color.FromArgb(168, 225, 222);
+            this.Activated += (s, e) => RefreshSongs();
             flowLayoutPanel1.SizeChanged += (s, e) =>
             {
                 foreach (Control control in flowLayoutPanel1.Controls)

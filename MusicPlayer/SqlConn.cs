@@ -133,20 +133,50 @@ namespace MusicPlayer
             return artists.ToArray();
         }
 
-        
+
 
         public void addSong(Song song)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string query = "INSERT INTO Songs(title, duration, releaseDate, genre, studio, info, path, idArtist)" +
-                    "VALUES (@title, @duration, @releaseDate, @genre, @studio, @info, @path, @idArtist)";
+
+                // 1. Remove connections for the song path
+                string cleanupConnections = @"DELETE FROM Connections 
+                                     WHERE idSong IN (SELECT idSong FROM Songs WHERE path = @path)";
+                using (SqlCommand cmd = new SqlCommand(cleanupConnections, connection))
+                {
+                    cmd.Parameters.AddWithValue("@path", song.Path);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // 2. Remove duplicate song records by path
+                string cleanupSongs = "DELETE FROM Songs WHERE path = @path";
+                using (SqlCommand cmd = new SqlCommand(cleanupSongs, connection))
+                {
+                    cmd.Parameters.AddWithValue("@path", song.Path);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // 3. Ensure releaseDate is in standard yyyy-MM-dd format or fallback to valid date
+                string formattedReleaseDate;
+                if (DateTime.TryParse(song.ReleaseDate, out DateTime parsedDate))
+                {
+                    formattedReleaseDate = parsedDate.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    formattedReleaseDate = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+
+                // 4. Insert the song record safely
+                string query = @"INSERT INTO Songs(title, duration, releaseDate, genre, studio, info, path, idArtist)
+                        VALUES (@title, @duration, @releaseDate, @genre, @studio, @info, @path, @idArtist)";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@title", song.Title);
                     command.Parameters.AddWithValue("@duration", song.Duration);
-                    command.Parameters.AddWithValue("@releaseDate", song.ReleaseDate);
+                    command.Parameters.AddWithValue("@releaseDate", formattedReleaseDate);
                     command.Parameters.AddWithValue("@genre", song.Genre);
                     command.Parameters.AddWithValue("@studio", song.Studio);
                     command.Parameters.AddWithValue("@info", song.Info);

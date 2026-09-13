@@ -23,7 +23,6 @@ namespace MusicPlayer
         private void browseButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-
             dialog.Filter = "WAV files (*.wav)|*.wav";
 
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -88,53 +87,52 @@ namespace MusicPlayer
 
             try
             {
-                string fileName = Path.GetFileName(sourcePath);
-
-                string destinationFolder = Path.Combine(
-                    Application.StartupPath,
-                    "Media",
-                    "Audio"
-                );
-
-                Directory.CreateDirectory(destinationFolder);
-
-                string destinationPath = Path.Combine(destinationFolder, fileName);
-
-                File.Copy(sourcePath, destinationPath, true);
-                TimeSpan duration = GetWavDuration(sourcePath);
-                string durationText = duration.ToString(@"mm\:ss");
-                string artistName = artistTextBox.Text.Trim();
-
-                Artist artist = service.getArtistByName(artistName);
-                int artistId;
-                if (artist!= null)
-                {
-                    artistId = artist.IdArtist;
-                }
-                else
-                {
-                    artistId = service.addArtist(artistName);
-                }
                 string title = songTextBox.Text.Trim();
-
-                if (title == "")
+                if (string.IsNullOrEmpty(title))
                 {
                     MessageBox.Show("Enter a song title.");
                     return;
                 }
 
-                if (artistName == "")
+                string artistName = artistTextBox.Text.Trim();
+                if (string.IsNullOrEmpty(artistName))
                 {
                     MessageBox.Show("Enter an artist.");
                     return;
                 }
+
+                // Validate Release Year input
+                string yearInput = yearTextBox.Text.Trim();
+                if (!int.TryParse(yearInput, out int year) || year < 1000 || year > DateTime.Now.Year)
+                {
+                    MessageBox.Show($"Please enter a valid 4-digit release year (1000–{DateTime.Now.Year}).");
+                    return;
+                }
+
+                // Default Genre and Studio to "Unknown" if left empty
+                string genre = string.IsNullOrWhiteSpace(genreTextBox.Text) ? "Unknown" : genreTextBox.Text.Trim();
+                string studio = string.IsNullOrWhiteSpace(studioTextBox.Text) ? "Unknown" : studioTextBox.Text.Trim();
+
+                string fileName = Path.GetFileName(sourcePath);
+                string destinationFolder = Path.Combine(Application.StartupPath, "Media", "Audio");
+                Directory.CreateDirectory(destinationFolder);
+
+                string destinationPath = Path.Combine(destinationFolder, fileName);
+                File.Copy(sourcePath, destinationPath, true);
+
+                TimeSpan duration = GetWavDuration(sourcePath);
+                string durationText = duration.ToString(@"mm\:ss");
+
+                Artist artist = service.getArtistByName(artistName);
+                int artistId = (artist != null) ? artist.IdArtist : service.addArtist(artistName);
+
                 Song newSong = new Song(
                     0,
                     title,
                     durationText,
-                    "2026",
-                    "Unknown",
-                    "Unknown",
+                    yearInput,
+                    genre,
+                    studio,
                     "Imported manually",
                     fileName,
                     artistId
@@ -151,14 +149,7 @@ namespace MusicPlayer
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void label2_Click(object sender, EventArgs e) { }
     }
 }
