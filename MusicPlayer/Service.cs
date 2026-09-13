@@ -177,6 +177,8 @@ namespace MusicPlayer
 
         public Song currentSong()
         {
+            if (numberOfPlayingSongs == 0 || playingSongs == null)
+                return null;
             return playingSongs[currentSongIndex];
         }
         //functiile de update

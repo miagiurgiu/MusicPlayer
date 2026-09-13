@@ -95,7 +95,11 @@ namespace MusicPlayer
 
             // STOP OLD SONG FIRST
             if (_soundPlayer != null)
+            {
                 _soundPlayer.Stop();
+                _soundPlayer.Dispose(); // clean up memory and release the audio file
+            }
+                
 
             _myTimer.Stop();
 
@@ -270,13 +274,11 @@ namespace MusicPlayer
                 _myTimer.Stop();
                 _soundPlayer.Stop();
 
-                Song next =
-                    service.nextSong();
+                Song next = service.nextSong();
 
-                if (next != null &&
-                    File.Exists(GetAudioPath(next)))
+                if (next != null)
                 {
-                    playSelectedSong(next.IdSong);
+                    playCurrentSong();
                 }
             }
         }
@@ -286,6 +288,8 @@ namespace MusicPlayer
             EventArgs e
         )
         {
+            if (service.getSongCount() <= 1)
+                return;
             Song next =
                 service.nextSong();
 
