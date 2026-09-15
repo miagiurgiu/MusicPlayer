@@ -28,7 +28,8 @@ namespace MusicPlayer
             Service service = new Service(repository);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LaunchScreenForm(service));
+            Application.Run(new LaunchScreenForm(service,connectionString));
+            //Application.Run(new LoginForm(service, connectionString));
         }
     }
 }

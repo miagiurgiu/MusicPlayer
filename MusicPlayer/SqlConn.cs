@@ -133,7 +133,10 @@ namespace MusicPlayer
             return artists.ToArray();
         }
 
-
+        public string ConnectionString
+        {
+            get { return _connectionString; }
+        }
 
         public void addSong(Song song)
         {

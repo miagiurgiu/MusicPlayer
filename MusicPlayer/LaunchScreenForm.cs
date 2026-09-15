@@ -13,9 +13,11 @@ namespace MusicPlayer
     public partial class LaunchScreenForm : Form
     {
         Service service;
-        public LaunchScreenForm(Service service)
+        string connectionString;
+        public LaunchScreenForm(Service service, string connectionString)
         {
             this.service = service;
+            this.connectionString = connectionString;
             InitializeComponent();
         }
 
@@ -27,10 +29,14 @@ namespace MusicPlayer
 
         private void label1_Click(object sender, EventArgs e)
         {
-            Form1 mainForm = new Form1(service);
-            mainForm.Show();
+            //Form1 mainForm = new Form1(service);
+            //mainForm.Show();
+            //this.Hide();
+            //mainForm.FormClosed += (s, args) => this.Close(); //daca inchid formul de tip playlist (adica asta nou) sa mi se afiseze anteriorul
+            LoginForm loginForm = new LoginForm(service, connectionString);
+            loginForm.Show();
             this.Hide();
-            mainForm.FormClosed += (s, args) => this.Close(); //daca inchid formul de tip playlist (adica asta nou) sa mi se afiseze anteriorul
+            loginForm.FormClosed += (s, args) => this.Close();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
