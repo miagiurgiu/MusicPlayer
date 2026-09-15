@@ -4,6 +4,7 @@
 
 <p>
   <strong>A Windows desktop music player developed in C# using Windows Forms and SQL Server (ongoing project).</strong>
+  <italic>MusicPlayer is written in C#, using .NET and Windows Forms, with SQL Server as the database.</italic>
 </p>
 
 <br>
