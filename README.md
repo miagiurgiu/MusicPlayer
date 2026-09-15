@@ -112,7 +112,9 @@ FinalMusicPlayer/
 
 ## Architecture
 The project separates the main responsibilities into several components:
+
 Repository – communicates with the database and manages data access.
+
 Service – contains application logic and coordinates operations between the UI and repository.
 Forms – provide the graphical user interface.
 SqlConn – handles communication with SQL Server.
