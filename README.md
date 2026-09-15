@@ -3,46 +3,38 @@
 <h1>MusicPlayer</h1>
 
 <p>
-  <strong>A Windows desktop music player developed in C# using Windows Forms and SQL Server. 
-</strong>
+  <strong>A Windows desktop music player developed in C# using Windows Forms and SQL Server (ongoing project).</strong>
 </p>
 
 <br>
 
-<p> 
-  <img
-    src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"
-  >
-  <img
-    src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"
-  >
-  <img
-    src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"
-    alt="NumPy"
-  >
-  <img
-    src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"
-  >
-</p>
-
 <p>
   <img
-    src="https://img.shields.io/badge/DESKTOP-PYSIDE6-41CD52?style=for-the-badge&logo=qt&logoColor=white&labelColor=484848"
-    alt="PySide6"
+    src="https://img.shields.io/badge/C%23-.NET-144B4E?style=for-the-badge&logo=dotnet&logoColor=white"
+    alt="C# / .NET"
   >
   <img
-    src="https://img.shields.io/badge/WEB-FASTAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=484848"
-    alt="FastAPI"
+    src="https://img.shields.io/badge/WINDOWS-WINFORMS-A8E1DE?style=for-the-badge&logo=windows&logoColor=144B4E"
+    alt="Windows Forms"
+  >
+  <img
+    src="https://img.shields.io/badge/DATABASE-SQL%20SERVER-50B4B2?style=for-the-badge&logo=microsoftsqlserver&logoColor=white"
+    alt="SQL Server"
+  >
+  <img
+    src="https://img.shields.io/badge/IDE-VISUAL%20STUDIO-144B4E?style=for-the-badge&logo=visualstudio&logoColor=white"
+    alt="Visual Studio"
   >
 </p>
 
 </div>
-
 ---
 
 ## 📖 Project Overview
 
 The application allows users to manage songs and playlists, play audio files, and store music-related information in a relational database.
+The core music-player functionality is implemented, including database storage, song and playlist management, audio playback, and UI interaction.
+Authentication/security features are currently being added, and some playback/playlist behaviour may still require refinement.
 
 ## Technologies
 
@@ -115,3 +107,37 @@ FinalMusicPlayer/
 │       └── Images/
 │
 └── MusicPlayer.sln
+```
+
+## Architecture
+The project separates the main responsibilities into several components:
+Repository – communicates with the database and manages data access.
+Service – contains application logic and coordinates operations between the UI and repository.
+Forms – provide the graphical user interface.
+SqlConn – handles communication with SQL Server.
+PasswordHasher – provides password hashing functionality for user authentication.
+
+## Database
+The main database entities are:
+- Users
+- Songs
+- Artists
+- Playlists
+- Connections
+> Playlists are associated with users, while songs and playlists are connected through the Connections table.
+
+## Security
+User authentication is currently being implemented.
+The project uses password hashing and a unique salt instead of storing passwords directly. Password hashing is implemented using PBKDF2.
+The authentication system is intended to provide:
+user registration
+login
+password verification
+protected access to the application
+
+
+## Audio files
+For portability, the application looks for audio files inside:
+```MusicPlayer/Media/Audio/```
+The repository also contains 2 demo audio files. The complete personal music collection is not included in the repository (have been manually added though the Import song functionality)
+
