@@ -34,23 +34,19 @@
 ## 📖 Project Overview
 
 The application allows users to manage songs and playlists, play audio files, and store music-related information in a relational database.
-The core music-player functionality is implemented, including database storage, song and playlist management, audio playback, and UI interaction.
+The core music-player functionalities include database storage, song and playlist management, audio playback, and UI interaction.
 Authentication/security features are currently being added, and some playback/playlist behaviour may still require refinement.
 
 ## Technologies
 
 - C#
 - .NET / Windows Forms
-- SQL Server Express
 - SQL Server Management Studio
 - Visual Studio
 - Git / GitHub
 
-## Features
-
 ### Music management
-- Add songs to the database
-- Import `.wav` audio files
+- Add songs to the database (Import `.wav` audio files)
 - Automatically calculate song duration
 - Store information such as title, artist, genre, release date and file path
 - Display all available songs
@@ -61,14 +57,13 @@ Authentication/security features are currently being added, and some playback/pl
 - Create playlists
 - Delete playlists
 - Display playlists
-- View songs belonging to a playlist
-- Add and remove songs from playlists
+- Display songs belonging to a playlist
+- Manage playlists (add and remove songs from playlists)
 
 ### Music playback
-- Play songs
-- Stop and restart playback
+- Play/pause songs
 - Navigate to the next and previous song
-- Automatically move to the next song when playback ends
+- Automatically move to the next song when playback ends (still needs checking)
 - Display the current song and artist
 - Display the elapsed playback time
 
@@ -81,7 +76,7 @@ The application uses SQL Server to store:
 - Playlists
 - Connections between songs and playlists
 
-The database structure uses primary and foreign keys to maintain relationships between entities.
+> The database structure uses primary and foreign keys to maintain relationships between entities.
 
 ## Project structure
 
@@ -103,6 +98,7 @@ FinalMusicPlayer/
 │   ├── DisplaySongsForm.cs
 │   ├── DisplayPlaylistForm.cs
 │   ├── DisplaySongsFromPlaylist.cs
+|   ... (the rest is to be added)
 │   └── Media/
 │       ├── Audio/
 │       └── Images/
@@ -112,13 +108,11 @@ FinalMusicPlayer/
 
 ## Architecture
 The project separates the main responsibilities into several components:
-
-Repository – communicates with the database and manages data access.
-
-Service – contains application logic and coordinates operations between the UI and repository.
-Forms – provide the graphical user interface.
-SqlConn – handles communication with SQL Server.
-PasswordHasher – provides password hashing functionality for user authentication.
+- Repository – communicates with the database and manages data access.
+- Service – contains application logic and coordinates operations between the UI and repository.
+- Forms – provide the graphical user interface.
+- SqlConn – handles communication with SQL Server.
+- PasswordHasher – provides password hashing functionality for user authentication.
 
 ## Database
 The main database entities are:
@@ -133,14 +127,14 @@ The main database entities are:
 User authentication is currently being implemented.
 The project uses password hashing and a unique salt instead of storing passwords directly. Password hashing is implemented using PBKDF2.
 The authentication system is intended to provide:
-user registration
-login
-password verification
-protected access to the application
+- user registration
+- login
+- password verification
 
 
 ## Audio files
 For portability, the application looks for audio files inside:
 ```MusicPlayer/Media/Audio/```
-The repository also contains 2 demo audio files. The complete personal music collection is not included in the repository (have been manually added though the Import song functionality)
+The repository also contains 2 demo audio files. 
+The complete personal music collection is not included in the repository (have been manually added though the Import song functionality)
 
